@@ -1,0 +1,19 @@
+{
+  "productos": [
+    {
+      "nombre": "MERN 2",
+      "precio": "200",
+      "id": 2
+    },
+    {
+      "nombre": "tequila",
+      "precio": "600",
+      "id": 3
+    },
+    {
+      "nombre": "Oscar",
+      "precio": 300,
+      "id": 4
+    }
+  ]
+}
