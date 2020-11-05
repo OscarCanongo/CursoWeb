@@ -1,16 +1,16 @@
 const Usuario = require('../models/Usuario');
-//const bcryptjs = require('bcryptjs');
-//const { validationResult } = require('express-validator');
+const bcryptjs = require('bcryptjs');
+const { validationResult } = require('express-validator');
 //const jwt = require('jsonwebtoken');
 
 exports.crearUsuario = async (req, res) => {
     
     //Revisar si hay errores
-    //const error = validationResult(req);
+    const error = validationResult(req);
 
-    //if (!error.isEmpty()) {
-      //  return res.status(400).json({ error: error.array() })
-   // }
+    if (!error.isEmpty()) {
+        return res.status(400).json({ error: error.array() })
+    }
     
     //Extraer email y password
     const { email, password } = req.body;
@@ -28,8 +28,8 @@ exports.crearUsuario = async (req, res) => {
         usuario = new Usuario(req.body);
 
         //Hashear el password
-        //const salt = await bcryptjs.genSalt(10);
-        //usuario.password = await bcryptjs.hash(password, salt);
+        const salt = await bcryptjs.genSalt(10);
+        usuario.password = await bcryptjs.hash(password, salt);
 
         //Guarda el usuario
         await usuario.save();
@@ -52,7 +52,7 @@ exports.crearUsuario = async (req, res) => {
         //});
 
         //Mensaje de confirmacion
-        //res.json({ msg: 'Usuario creado correctamente'});
+        res.json({ msg: 'Usuario creado correctamente'});
 
     } catch (error) {
         console.log(error);
