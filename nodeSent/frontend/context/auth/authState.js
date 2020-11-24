@@ -1,30 +1,36 @@
 import React, { useReducer } from 'react';
 import authContext from './authContext';
 import authReducer from './authReducer';
-import clienteAxios from '../../config/axios';
-import tokenAuth from '../../config/tokenAuth';
-import {
-    USUARIO_AUTENTICADO, 
+
+
+import { 
     REGISTRO_EXITOSO, 
     REGISTRO_ERROR,
-    LIMPIAR_ALERTA,
+    OCULTAR_ALERTA,
+    LOGIN_EXITOSO,
     LOGIN_ERROR,
-    LOGIN_EXITOSO} from '../../types/index';
+    USUARIO_AUTENTICADO,
+    CERRAR_SESION
+} from '../../types';
+
+import clienteAxios from '../../config/axios';
+import tokenAuth from '../../config/tokenAuth';
 
 const AuthState = ({children}) => {
 
-    //Definir un state inicial
+    // Definir un state inicial
     const initialState = {
         token: typeof window !== 'undefined' ? localStorage.getItem('token') : '',
         autenticado: null,
         usuario: null,
-        mensaje: null
+        mensaje: null,
+        cargando: null
     }
 
-    //Definir el reducer
+    // Definir el reducer
     const [ state, dispatch ] = useReducer(authReducer, initialState);
 
-    //Registrar nuevos usuarios
+    // Registrar nuevos usuarios
     const registrarUsuario = async datos => {
         
         try {
@@ -37,24 +43,24 @@ const AuthState = ({children}) => {
             dispatch({
                 type: REGISTRO_ERROR,
                 payload: error.response.data.msg
-            });
+            })
         }
-
-        //Limpia la alerta después de 3 segundos
+        // Limpia la alerta después de 3 segundos
         setTimeout(() => {
             dispatch({
-                type: LIMPIAR_ALERTA
-            });
+                type: OCULTAR_ALERTA
+            })
         }, 3000);
     }
 
-    //Autenticar usuarios
+    // Autenticar Usuarios
     const iniciarSesion = async datos => {
+
         try {
-            const respuesta = await clienteAxios.post('api/auth', datos);
+            const respuesta = await clienteAxios.post('/api/auth', datos);
             dispatch({
                 type: LOGIN_EXITOSO,
-                payload:respuesta.data.token
+                payload: respuesta.data.token
             })
         } catch (error) {
             dispatch({
@@ -62,50 +68,63 @@ const AuthState = ({children}) => {
                 payload: error.response.data.msg
             })
         }
-        //Limpia la alerta después de 3 segundos
+
+        // Limpia la alerta después de 3 segundos
         setTimeout(() => {
             dispatch({
-                type: LIMPIAR_ALERTA
-            });
+                type: OCULTAR_ALERTA
+            })
         }, 3000);
     }
 
-    //Retorne el usuario autenticado en base al JWT
+    // Retorne el Usuario autenticado en base al JWT
     const usuarioAutenticado = async () => {
-       
         const token = localStorage.getItem('token');
-       
-        if (token) {
-            tokenAuth(token);
+        if(token) {
+            tokenAuth(token)
         }
-        
+
         try {
             const respuesta = await clienteAxios.get('/api/auth');
-            console.log(respuesta.data.usuario);
-            dispatch({
-                type: USUARIO_AUTENTICADO,
-                payload: respuesta.data.usuario
-            })
+            if(respuesta.data.usuario) {
+                dispatch({
+                    type: USUARIO_AUTENTICADO,
+                    payload: respuesta.data.usuario
+                }) 
+            }
+
         } catch (error) {
-            
+            dispatch({
+                type: LOGIN_ERROR,
+                payload: error.response.data.msg
+            })
         }
     }
 
-    return(
+    // Cerrar la sesión
+    const cerrarSesion = () => {
+        dispatch({
+            type: CERRAR_SESION
+        })
+    }
+
+    return (
         <authContext.Provider
-            value = {{
+            value={{ 
                 token: state.token,
                 autenticado: state.autenticado,
                 usuario: state.usuario,
                 mensaje: state.mensaje,
+                cargando: state.cargando,
                 registrarUsuario,
                 iniciarSesion,
-                usuarioAutenticado
+                usuarioAutenticado, 
+                cerrarSesion
             }}
         >
             {children}
         </authContext.Provider>
     )
-} 
+}
 
 export default AuthState;
