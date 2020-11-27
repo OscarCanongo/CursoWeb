@@ -6,22 +6,19 @@ import appContext from '../context/app/appContext';
 const Dropzone = () => {
 
     const AppContext = useContext(appContext);
-    const { mostrarAlerta } = AppContext;
+    const { mostrarAlerta, subirArchivo } = AppContext;
 
     const onDropRejected = () => {
-        mostrarAlerta("No se pudo subir");
+        mostrarAlerta("No se pudo subir, el limite es 1mb, obtener una cuenta gratis para subir archivos más grandes");
     }
 
     const onDropAccepted = useCallback( async (acceptedFiles) => {
-        console.log(acceptedFiles);
 
         //Crear un form data
         const formData = new FormData();
         formData.append('archivo', acceptedFiles[0]);
 
-        const resultado = await clienteAxios.post('/api/archivos', formData);
-
-        console.log(resultado.data);
+        subirArchivo();
     }, []);
 
     // Extraer contenido de Dropzone
