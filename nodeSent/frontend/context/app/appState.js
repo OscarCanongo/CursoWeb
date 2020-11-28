@@ -68,7 +68,7 @@ const AppState = ({children}) => {
             // console.log(error);
             dispatch({
                 type: SUBIR_ARCHIVO_ERROR,
-                payload: error.response.data.msg
+                payload: error.response
             })
         }
     }

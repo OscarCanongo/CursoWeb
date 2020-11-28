@@ -19,9 +19,9 @@ module.exports = (req, res, next ) => {
                 console.log(error);
                 console.log('JWT no valido');
             }
-        } else {
-            return res.status(401).json({msg: "No hay token, permiso no valido"});
         }
+
+
     } 
 
     return next();

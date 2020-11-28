@@ -1,5 +1,6 @@
 module.exports = {
-    env:{
-        URL: 'http://localhost:4000'
+    env: {
+        backendURL: 'http://localhost:4000',
+        frontendURL: 'http://localhost:3000'
     }
 }
