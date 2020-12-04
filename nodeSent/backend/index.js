@@ -9,10 +9,7 @@ const app = express();
 conectarDB();
 
 //habilitar cors
-const opcionesCors = {
-    origin: process.env.FRONTEND
-}
-app.use(cors(opcionesCors));
+app.use(cors());
 
 //Habilitar express.json
 app.use(express.json({ extended: true}));

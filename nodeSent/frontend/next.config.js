@@ -1,6 +1,6 @@
 module.exports = {
     env: {
-        backendURL: 'http://localhost:4000',
-        frontendURL: 'http://localhost:3000'
+        backendURL: 'https://radiant-gorge-69371.herokuapp.com',
+        frontendURL: 'https://frontend-sandy-zeta.vercel.app'
     }
 }
