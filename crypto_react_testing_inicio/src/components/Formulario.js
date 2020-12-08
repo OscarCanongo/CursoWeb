@@ -85,6 +85,7 @@ const Formulario = ({guardarMoneda,  guardarCriptomoneda }) => {
             <Boton
                 type="submit"
                 value="Calcular"
+                data-testid = "submit"
             />
         </form>
      );

@@ -36,7 +36,7 @@ const useMoneda = (label, stateInicial, opciones) => {
             >
                 <option value="">- Seleccione -</option>
                 {opciones.map(opcion => (
-                    <option key={opcion.codigo} value={opcion.codigo}>{opcion.nombre}</option>
+                    <option data-testid = "opcion-cripto" key={opcion.codigo} value={opcion.codigo}>{opcion.nombre}</option>
                 ))}
             </Select>
         </Fragment>
