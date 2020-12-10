@@ -29,15 +29,47 @@ describe( '<Formularios />', () => {
         cy.get('[data-cy=nueva-cuenta]')
             .should("exist")
             .should('have.prop', 'tagName')
-            .should('eq', 'A')
+            .should('eq', 'A');
 
         cy.get('[data-cy=nueva-cuenta]')
             .should('have.attr', 'href')
-            .should('eq', '/nueva-cuenta') 
+            .should('eq', '/nueva-cuenta');
         
         cy.visit('/nueva-cuenta');
     });
-    it('Login /> - Verificar el formulario', () => {
+    it('<NuevaCuenta /> - Verificar componente de nueva cuenta', () => {
+        cy.get('[data-cy = titulo]')
+            .should('exist')
+            .invoke('text')
+            .should('equal', 'Obtener una cuenta');
+        
+        cy.get('[data-cy = nueva-cuenta]')
+            .should('exist');
 
+        cy.get('[data-cy = nombre-input]')
+            .should('exist');
+        
+        cy.get('[data-cy = email-input]')
+            .should('exist');
+        
+        cy.get('[data-cy = password-input]')
+            .should('exist')
+            .should('have.prop', 'type')
+            .should('equal', 'password');
+        
+        cy.get('[data-cy = repetir-password-input]')
+            .should('exist');
+    
+        cy.get('[data-cy = submit-nueva-cuenta')
+            .should('exist')
+            .should('have.class', 'btn-primario')
+            .should('have.value', 'Registrarme');
+        
+        cy.get('[data-cy = enlace-login]')
+            .should('exist')
+            .should('have.attr', 'href')
+            .should('eq', '/')
+        
+        cy.visit('/');
     });
 })
